@@ -42,7 +42,7 @@ pipeline {
     
     stage('Push Docker Image') {
       steps {
-        scripts {
+        script {
           sh 'rm -f ~/.dockercfg ~/.docker/config.json || true'
 
           docker.writeRegistry("https://${ECR_REPOSITORY}", "ecr:${REGION}:${AWS_CREDENTIALS_NAME}") {
