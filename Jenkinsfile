@@ -45,8 +45,8 @@ pipeline {
         script {
           sh 'rm -f ~/.dockercfg ~/.docker/config.json || true'
 
-          docker.withRegistry("https://257307634175.dkr.ecr.ap-northeast-2.amazonaws.com", "ecr:ap-northeast-2:AWSCredentials") {
-            docker.image("aws10-spring-petclinic:1.0").push()
+          docker.withRegistry("https://${ECR_REPOSITORY}", "ecr:${REGION}:${AWS_CREDENTIALS_NAME}") {
+            docker.image("${DOCKER_IMAGE_NAME}").push()
           }
         }
       }
