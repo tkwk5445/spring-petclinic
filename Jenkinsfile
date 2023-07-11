@@ -14,44 +14,42 @@ pipeline {
     ECR_DOCKER_TAG = "${DOCKER_TAG}"
   }
 
-  
   stages {
     stage('Git Clone') {
       steps {
         git url: 'https://github.com/tkwk5445/spring-petclinic.git', branch: 'efficient-webjars', credentialsId: 'gitCredentials'
+
       }
     }
     stage('mvn build') {
       steps {
-        sh 'mvn -Dmaven.test.failure.ignore=true install'
+       sh 'mvn -Dmaven.test.failure.ignore=true install' 
       }
       post {
         success {
           junit '**/target/surefire-reports/TEST-*.xml'
         }
       }
-    }
-
-    stage('Docker image build') {
+    } 
+    stage('Docker Image Build') {
       steps {
         dir("${env.WORKSPACE}") {
           sh 'docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} .'
         }
       }
     }
-    
+
     stage('Push Docker Image') {
       steps {
         script {
           sh 'rm -f ~/.dockercfg ~/.docker/config.json || true'
 
           docker.withRegistry("https://${ECR_REPOSITORY}", "ecr:${REGION}:${AWS_CREDENTIALS_NAME}") {
-            docker.image("${DOCKER_IMAGE_NAME}").push()
+            docker.image("${DOCKER_IMAGE_NAME}:${DOCKER_TAG}").push()
           }
         }
       }
-    }
-    
-    
+   }
+  
   }
 }
