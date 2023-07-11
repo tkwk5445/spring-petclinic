@@ -13,7 +13,7 @@ pipeline {
     }
     stage('mvn build') {
       steps {
-       sh 'mvn -Dmaven.test.failure.igonore=true install' 
+       sh 'mvn -Dmaven.test.failure.ignore=true install' 
       }
       post {
         success {
