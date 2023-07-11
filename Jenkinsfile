@@ -17,7 +17,7 @@ pipeline {
       }
       post {
         success {
-          junit '**/target/surefire-reports/Test-*.xml'
+          junit '**/target/surefire-reports/TEST-*.xml'
         }
       }
     } 
