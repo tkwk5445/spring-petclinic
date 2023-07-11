@@ -4,7 +4,7 @@ pipeline {
     maven 'M3'
     jdk 'JDK11'
   }
-  environmnet {
+  environment {
     AWS_CREDENTIALS_NAME = "AWSCredentials"
     REGION = "ap-northeast-2"
     DOCKER_IMAGE_NAME = "aws10-spring-petclinic"
