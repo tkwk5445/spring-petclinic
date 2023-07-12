@@ -49,6 +49,16 @@ pipeline {
         }
       }
    }
-  
+    stage('Upload to S3') {
+      steps {
+        dir("${env.WORKSPACE}") {
+          sh 'zip -r deploy-1.0.zip ./scripts appspec.yml'
+          sh 'aws s3 cp --region ap-northeast-2 --acl private ./deploy-1.0.zip s3://aws05-codedeploy'
+          sh 'rm -rf ./deploy-1.0.zip'
+        }
+      }
+    }
+
+    
   }
 }
