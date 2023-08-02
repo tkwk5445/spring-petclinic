@@ -61,12 +61,21 @@ pipeline {
       }
     }
 
-    stage('Codeploy') {
+    stage('CodeDeploy') {
       steps {
-        echo 'Code deploy'
-      }
-    }
+        script {
+          def appName = "Your-CodeDeploy-Application-Name"
+          def deploymentGroupName = "Your-CodeDeploy-Deployment-Group-Name"
 
+          sh "aws deploy create-deployment" +
+             " --region ap-northeast-2" +
+             " --application-name ${appName}" +
+             " --deployment-group-name ${deploymentGroupName}" +
+             " --deployment-config-name CodeDeployDefault.OneAtATime" +
+             " --auto-scaling-groups Your-Auto-Scaling-Group-Name"
+        }
+      }  
+    }
 
 
     
