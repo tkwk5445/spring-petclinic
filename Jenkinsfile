@@ -12,6 +12,9 @@ pipeline {
     ECR_REPOSITORY = "257307634175.dkr.ecr.ap-northeast-2.amazonaws.com/project03-spring-petclinic"
     ECR_DOCKER_IMAGE = "${ECR_REPOSITORY}/${DOCKER_IMAGE_NAME}"
     ECR_DOCKER_TAG = "${DOCKER_TAG}"
+    appName =
+    deploymentGroupName =
+    ASG = project03-GROUP
   }
 
   stages {    // 작업해야할 stages들
@@ -68,11 +71,11 @@ pipeline {
           def deploymentGroupName = "Your-CodeDeploy-Deployment-Group-Name"
 
           sh "aws deploy create-deployment" +
-             " --region ap-northeast-2" +
+             " --region ${REGION}" +
              " --application-name ${appName}" +
              " --deployment-group-name ${deploymentGroupName}" +
              " --deployment-config-name CodeDeployDefault.OneAtATime" +
-             " --auto-scaling-groups Your-Auto-Scaling-Group-Name"
+             " --auto-scaling-groups ${ASG}"
         }
       }  
     }
