@@ -7,7 +7,7 @@ pipeline {
   environment {    // 환경변수들,  파라미터: 매개변수
     AWS_CREDENTIALS_NAME = "AWSCredentials"
     REGION = "ap-northeast-2"
-    DOCKER_IMAGE_NAME = "aws10-spring-petclinic"
+    DOCKER_IMAGE_NAME = "project03-spring-petclinic"
     DOCKER_TAG = "1.0"
     ECR_REPOSITORY = "257307634175.dkr.ecr.ap-northeast-2.amazonaws.com"
     ECR_DOCKER_IMAGE = "${ECR_REPOSITORY}/${DOCKER_IMAGE_NAME}"
@@ -55,7 +55,7 @@ pipeline {
       steps {
         dir("${env.WORKSPACE}") {
           sh 'zip -r deploy-1.0.zip ./scripts appspec.yml'    // workspace의 yml파일과 scripts폴더를 deploy-1.0.zip으로 압축한다.
-          sh 'aws s3 cp --region ap-northeast-2 --acl private ./deploy-1.0.zip s3://aws10-codedeploy'  // 압축 된 파일을 s3 버킷으로 보낸다
+          sh 'aws s3 cp --region ap-northeast-2 --acl private ./deploy-1.0.zip s3://project03-terraform-state'  // 압축 된 파일을 s3 버킷으로 보낸다
           sh 'rm -rf ./deploy-1.0.zip'
         }
       }
