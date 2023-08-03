@@ -12,9 +12,10 @@ pipeline {
         ECR_REPOSITORY = '257307634175.dkr.ecr.ap-northeast-2.amazonaws.com/project03-spring-petclinic'
         ECR_DOCKER_IMAGE = "${ECR_REPOSITORY}/${DOCKER_IMAGE_NAME}"
         ECR_DOCKER_TAG = "${DOCKER_TAG}"
-        appName = 'project03-exercise'
-        deploymentGroupName = 'project03-production-in_place'
+        APPNAME = 'project03-exercise'
+        DEPLOYGROUP_NAME = 'project03-production-in_place'
         ASG = 'project03-GROUP'
+        BUCKET = 'project03-terraform-state'
     }
 
     stages {    // 작업해야할 stages들
@@ -57,7 +58,7 @@ pipeline {
             steps {
                 dir("${env.WORKSPACE}") {
                     sh 'zip -r deploy-1.0.zip ./scripts appspec.yml'    // workspace의 yml파일과 scripts폴더를 deploy-1.0.zip으로 압축한다.
-                    sh 'aws s3 cp --region ap-northeast-2 --acl private ./deploy-1.0.zip s3://project03-terraform-state'  // 압축 된 파일을 s3 버킷으로 보낸다
+                    sh 'aws s3 cp --region ap-northeast-2 --acl private ./deploy-1.0.zip s3://${BUCKET}'  // 압축 된 파일을 s3 버킷으로 보낸다
                     sh 'rm -rf ./deploy-1.0.zip'
                 }
             }
