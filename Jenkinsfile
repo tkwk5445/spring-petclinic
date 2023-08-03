@@ -9,7 +9,7 @@ pipeline {
         REGION = 'ap-northeast-2'
         DOCKER_IMAGE_NAME = 'project03-spring-petclinic'
         DOCKER_TAG = '1.0'
-        ECR_REPOSITORY = '257307634175.dkr.ecr.ap-northeast-2.amazonaws.com/project03-spring-petclinic'
+        ECR_REPOSITORY = '257307634175.dkr.ecr.ap-northeast-2.amazonaws.com/'
         ECR_DOCKER_IMAGE = "${ECR_REPOSITORY}/${DOCKER_IMAGE_NAME}"
         ECR_DOCKER_TAG = "${DOCKER_TAG}"
         APPNAME = 'project03-exercise'
@@ -63,21 +63,21 @@ pipeline {
                 }
             }
         }
-/*     stage('CodeDeploy') {
-      steps {
-        script {
-          def appName = ${APPNAME}
-          def deploymentGroupName = ${DEPLOYGROUP_NAME}
+         stage('CodeDeploy') {
+          steps {
+            script {
+              def appName = ${APPNAME}
+              def deploymentGroupName = ${DEPLOYGROUP_NAME}
 
-          sh "aws deploy create-deployment" +
-             " --region ${REGION}" +
-             " --application-name ${APPNAME}" +
-             " --deployment-group-name ${DEPLOYGROUP_NAME}" +
-             " --deployment-config-name CodeDeployDefault.OneAtATime" +
-             " --auto-scaling-groups ${ASG}"
-        }
-      }
-    } */
+              sh "aws deploy create-deployment" +
+                 " --region ${REGION}" +
+                 " --application-name ${APPNAME}" +
+                 " --deployment-group-name ${DEPLOYGROUP_NAME}" +
+                 " --deployment-config-name CodeDeployDefault.OneAtATime" +
+                 " --auto-scaling-groups ${ASG}"
+            }
+          }
+        } 
 
     }
 }
