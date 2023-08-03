@@ -14,7 +14,7 @@ pipeline {
     ECR_DOCKER_TAG = "${DOCKER_TAG}"
     appName =
     deploymentGroupName =
-    ASG = project03-GROUP
+    ASG = "project03-GROUP"
   }
 
   stages {    // 작업해야할 stages들
