@@ -66,13 +66,13 @@ pipeline {
 /*     stage('CodeDeploy') {
       steps {
         script {
-          def appName = ${appName}
-          def deploymentGroupName = ${deploymentGroupName}
+          def appName = ${APPNAME}
+          def deploymentGroupName = ${DEPLOYGROUP_NAME}
 
           sh "aws deploy create-deployment" +
              " --region ${REGION}" +
-             " --application-name ${appName}" +
-             " --deployment-group-name ${deploymentGroupName}" +
+             " --application-name ${APPNAME}" +
+             " --deployment-group-name ${DEPLOYGROUP_NAME}" +
              " --deployment-config-name CodeDeployDefault.OneAtATime" +
              " --auto-scaling-groups ${ASG}"
         }
