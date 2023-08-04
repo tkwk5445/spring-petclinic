@@ -65,16 +65,16 @@ pipeline {
             }
         }
         stage('Deploy to CodeDeploy') {
-                    steps {
-                        script {
-                            sh 'aws deploy create-deployment ' +
-                            "--application-name ${APPLICATION_NAME} " +
-                            "--s3-location bucket=${S3_BUCKET},bundleType=zip,key=${S3_KEY} " +
-                            "--deployment-group-name ${DEPLOYMENT_GROUP} " +
-                            '--deployment-config-name CodeDeployDefault.OneAtATime ' +
-                            "--target-instances AutoScalingGroups=${AUTO_SCALING_GROUP}"
-                        }
-                    }
+            steps {
+                script {
+                    sh 'aws deploy create-deployment ' +
+                    "--application-name ${APPLICATION_NAME} " +
+                    "--s3-location bucket=${S3_BUCKET},bundleType=zip,key=${S3_KEY} " +
+                    "--deployment-group-name ${DEPLOYMENT_GROUP} " +
+                    '--deployment-config-name CodeDeployDefault.OneAtATime ' +
+                    "--target-instances AutoScalingGroups=${AUTO_SCALING_GROUP}"
+                }
+            }
         }
     }
 }
