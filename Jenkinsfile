@@ -59,7 +59,7 @@ pipeline {
             steps {
                 dir("${env.WORKSPACE}") {
                     sh 'zip -r deploy-1.0.zip ./scripts appspec.yml'    // workspace의 yml파일과 scripts폴더를 deploy-1.0.zip으로 압축한다.
-                    sh 'aws s3 cp --region ap-northeast-2 --acl private ./deploy-1.0.zip s3://${BUCKET}'  // 압축 된 파일을 s3 버킷으로 보낸다
+                    sh 'aws s3 cp --region ap-northeast-2 --acl private ./deploy-1.0.zip s3://${S3_BUCKET}'  // 압축 된 파일을 s3 버킷으로 보낸다
                     sh 'rm -rf ./deploy-1.0.zip'
                 }
             }
