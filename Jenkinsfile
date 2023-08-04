@@ -72,7 +72,7 @@ pipeline {
                     "--s3-location bucket=${S3_BUCKET},bundleType=zip,key=${S3_KEY} " +
                     "--deployment-group-name ${DEPLOYMENT_GROUP} " +
                     '--deployment-config-name CodeDeployDefault.OneAtATime ' +
-                    "--target-instances AutoScalingGroups=${AUTO_SCALING_GROUP}"
+                    "--auto-scaling-groups ${AUTO_SCALING_GROUP}"
                 }
             }
         }
