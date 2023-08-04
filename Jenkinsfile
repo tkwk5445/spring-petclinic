@@ -76,7 +76,7 @@ pipeline {
             }
         }
 
-       /*  stage('Deploy to CodeDeploy') {
+        stage('Deploy to CodeDeploy') {
             steps {
                 script {
                     sh "aws deploy create-deployment " +
@@ -87,6 +87,6 @@ pipeline {
                        "--target-instances autoScalingGroups=${AUTO_SCALING_GROUP}"
                 }
             }
-        } */
+        }
     }
 }
