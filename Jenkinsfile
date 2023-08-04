@@ -12,10 +12,11 @@ pipeline {
         ECR_REPOSITORY = '257307634175.dkr.ecr.ap-northeast-2.amazonaws.com/'
         ECR_DOCKER_IMAGE = "${ECR_REPOSITORY}/${DOCKER_IMAGE_NAME}"
         ECR_DOCKER_TAG = "${DOCKER_TAG}"
-        APPNAME = 'project03-exercise'
-        DEPLOYGROUP_NAME = 'project03-production-in_place'
-        ASG = 'project03-GROUP'
-        BUCKET = 'project03-terraform-state'
+        S3_BUCKET = 'project03-terraform-state'
+        S3_KEY = 'deploy-1.0.zip'
+        APPLICATION_NAME = 'project03-exercise'
+        DEPLOYMENT_GROUP = 'project03-production-in_place'
+        AUTO_SCALING_GROUP = 'project03-GROUP'
     }
 
     stages {    // 작업해야할 stages들
@@ -63,21 +64,17 @@ pipeline {
                 }
             }
         }
-         stage('CodeDeploy') {
-          steps {
-            script {
-              def appName = ${APPNAME}
-              def deploymentGroupName = ${DEPLOYGROUP_NAME}
-
-              sh "aws deploy create-deployment" +
-                 " --region ${REGION}" +
-                 " --application-name ${APPNAME}" +
-                 " --deployment-group-name ${DEPLOYGROUP_NAME}" +
-                 " --deployment-config-name CodeDeployDefault.OneAtATime" +
-                 " --auto-scaling-groups ${ASG}"
+stage('Deploy to CodeDeploy') {
+            steps {
+                script {
+                    sh "aws deploy create-deployment " +
+                       "--application-name ${APPLICATION_NAME} " +
+                       "--s3-location bucket=${S3_BUCKET},bundleType=zip,key=${S3_KEY} " +
+                       "--deployment-group-name ${DEPLOYMENT_GROUP} " +
+                       "--deployment-config-name CodeDeployDefault.OneAtATime " +
+                       "--target-instances AutoScalingGroups=${AUTO_SCALING_GROUP}"
+                }
             }
-          }
-        } 
-
+        }
     }
 }
