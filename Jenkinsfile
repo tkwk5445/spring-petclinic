@@ -23,7 +23,7 @@ pipeline {
     }
 
     stages {
-        stage('Test Stage 1') {
+        stage('Test Stage 2') {
             steps {
                 echo 'This is a test stage added for verification purposes.'
             }
