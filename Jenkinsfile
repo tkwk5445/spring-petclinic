@@ -39,12 +39,6 @@ pipeline {
             }
         }
 
-        stage('Second Test Stage') {
-            steps {
-                echo 'This is a webhook test stage added for verification purposes!.'
-            }
-        }
-
         stage('Git Clone') {
             steps {
                 // Git 리포지토리를 지정된 인증 정보로 클론합니다.
