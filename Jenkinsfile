@@ -39,11 +39,6 @@ pipeline {
             }
         }
         
-        stage('Second Test Stage') {
-            steps {
-                echo 'This is a webhook test stage added for verification purposes!.'
-            }
-        }
         
         stage('Git Clone') {
             steps {
