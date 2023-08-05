@@ -35,7 +35,7 @@ pipeline {
         stage('First Test Stage') {
             steps {
                 // webhook 적용후 확인용 테스트 단계입니다.
-                echo 'This is a webhook test stage added for verification purposes.'
+                echo 'This is a webhook test stage added for verification purposes!.'
             }
         }
 
