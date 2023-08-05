@@ -34,32 +34,26 @@ pipeline {
     stages {
         stage('First Test Stage') {
             steps {
-                // webhook 적용후 확인용 테스트 단계입니다.
-                echo 'This is a webhook test stage added for verification purposes!.'
-            }
-        }
-        stage('Second Test Stage') {
-            steps {
-                // webhook 적용후 확인용 테스트 단계입니다.
+                // webhook 적용후 확인용 테스트 단계
                 echo 'This is a webhook test stage added for verification purposes!.'
             }
         }
         
         stage('Git Clone') {
             steps {
-                // Git 리포지토리를 지정된 인증 정보로 클론합니다.
+                // Git 리포지토리를 지정된 인증 정보로 클론.
                 git url: 'https://github.com/tkwk5445/spring-petclinic.git', branch: 'efficient-webjars', credentialsId: 'gitCredentials'
             }
         }
 
         stage('mvn build') {
             steps {
-                // Maven 프로젝트를 테스트 실패를 무시하고 빌드합니다.
+                // Maven 프로젝트를 테스트 실패를 무시하고 빌드.
                 sh 'mvn -Dmaven.test.failure.ignore=true install'
             }
             post {
                 success {
-                    // JUnit 테스트 결과를 surefire-reports에서 파싱하여 게시합니다.
+                    // JUnit 테스트 결과를 surefire-reports에서 파싱하여 게시.
                     junit '**/target/surefire-reports/TEST-*.xml'
                 }
             }
@@ -67,7 +61,7 @@ pipeline {
 
         stage('Docker Image Build') {
             steps {
-                // Docker 이미지를 빌드합니다.
+                // Docker 이미지 빌드.
                 dir("${env.WORKSPACE}") {
                     sh 'docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} .'
                 }
@@ -77,7 +71,7 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    // Docker 레지스트리에 인증하고 Docker 이미지를 푸시합니다.
+                    // Docker 레지스트리에 인증하고 Docker 이미지를 푸시
                     sh 'rm -f ~/.dockercfg ~/.docker/config.json || true'
 
                     docker.withRegistry("https://${ECR_REPOSITORY}", "ecr:${REGION}:${AWS_CREDENTIALS_NAME}") {
@@ -89,7 +83,7 @@ pipeline {
 
         stage('Upload to S3') {
             steps {
-                // 필요한 파일들을 압축하여 S3 버킷에 업로드합니다.
+                // 필요한 파일들을 압축하여 S3 버킷에 업로드
                 dir("${env.WORKSPACE}") {
                     sh 'zip -r deploy-1.0.zip ./scripts appspec.yml'
                     sh 'aws s3 cp --region ${REGION} --acl private ./deploy-1.0.zip s3://${S3_BUCKET}/${S3_KEY}'
@@ -101,7 +95,7 @@ pipeline {
         stage('Deploy to CodeDeploy') {
             steps {
                 script {
-                    // AWS CLI를 사용하여 CodeDeploy에 배포를 생성합니다.
+                    // AWS CLI를 사용하여 CodeDeploy에 배포 생성
                     sh "aws deploy create-deployment " +
                        "--application-name ${APPLICATION_NAME} " +
                        "--s3-location bucket=${S3_BUCKET},bundleType=zip,key=${S3_KEY} " +
