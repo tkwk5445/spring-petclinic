@@ -32,28 +32,28 @@ pipeline {
 
     // 파이프라인의 단계들 정의
     stages {
-        stage('First Test Stage') {
+        /* stage('First Test Stage') {
             steps {
                 // webhook 적용후 확인용 테스트 단계
                 echo 'This is a webhook test stage added for verification purposes!.'
             }
-        }
+        } */
         
         stage('Git Clone') {
             steps {
-                // Git 리포지토리를 지정된 인증 정보로 클론.
+                // Git 리포지토리를 지정된 인증 정보로 클론
                 git url: 'https://github.com/tkwk5445/spring-petclinic.git', branch: 'efficient-webjars', credentialsId: 'gitCredentials'
             }
         }
 
         stage('mvn build') {
             steps {
-                // Maven 프로젝트를 테스트 실패를 무시하고 빌드.
+                // Maven 프로젝트를 테스트 실패를 무시하고 빌드
                 sh 'mvn -Dmaven.test.failure.ignore=true install'
             }
             post {
                 success {
-                    // JUnit 테스트 결과를 surefire-reports에서 파싱하여 게시.
+                    // JUnit 테스트 결과를 surefire-reports에서 파싱하여 게시
                     junit '**/target/surefire-reports/TEST-*.xml'
                 }
             }
@@ -61,7 +61,7 @@ pipeline {
 
         stage('Docker Image Build') {
             steps {
-                // Docker 이미지 빌드.
+                // Docker 이미지 빌드
                 dir("${env.WORKSPACE}") {
                     sh 'docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} .'
                 }
@@ -83,7 +83,7 @@ pipeline {
 
         stage('Upload to S3') {
             steps {
-                // 필요한 파일들을 압축하여 S3 버킷에 업로드
+                // 파일들을 압축하여 S3 버킷에 업로드
                 dir("${env.WORKSPACE}") {
                     sh 'zip -r deploy-1.0.zip ./scripts appspec.yml'
                     sh 'aws s3 cp --region ${REGION} --acl private ./deploy-1.0.zip s3://${S3_BUCKET}/${S3_KEY}'
