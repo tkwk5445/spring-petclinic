@@ -92,7 +92,7 @@ pipeline {
             }
         }
 
-        stage('Deploy to CodeDeploy') {
+       /*  stage('Deploy to CodeDeploy') {
             steps {
                 script {
                     // AWS CLI를 사용하여 CodeDeploy에 배포 생성
@@ -104,6 +104,6 @@ pipeline {
                        "--target-instances autoScalingGroups=${AUTO_SCALING_GROUP}"
                 }
             }
-        }
+        } */
     }
 }
