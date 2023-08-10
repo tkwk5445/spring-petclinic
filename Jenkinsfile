@@ -97,11 +97,11 @@ pipeline {
                 script {
                     // AWS CLI를 사용하여 CodeDeploy에 배포 생성
                     sh "aws deploy create-deployment " +
-                       "--application-name ${APPLICATION_NAME} " +
-                       "--s3-location bucket=${S3_BUCKET},bundleType=zip,key=${S3_KEY} " +
-                       "--deployment-group-name ${DEPLOYMENT_GROUP} " +
-                       "--deployment-config-name CodeDeployDefault.OneAtATime " +
-                       "--target-instances autoScalingGroups=${AUTO_SCALING_GROUP}"
+                        "--application-name ${APPLICATION_NAME} " +
+                        "--s3-location bucket=${S3_BUCKET},bundleType=zip,key=${S3_KEY} " +
+                        "--deployment-group-name ${DEPLOYMENT_GROUP} " +
+                        "--deployment-config-name CodeDeployDefault.OneAtATime " +
+                        "--target-instances autoScalingGroups=${AUTO_SCALING_GROUP}"
                 }
             }
         }
