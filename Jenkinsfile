@@ -85,7 +85,7 @@ pipeline {
             }
         }
         
-/*         stage('Deploy to CodeDeploy') {
+        stage('Deploy to CodeDeploy') {
             steps {
                 script {
                     // AWS CLI를 사용하여 CodeDeploy에 배포 생성
@@ -97,13 +97,13 @@ pipeline {
                         "--target-instances autoScalingGroups=${AUTO_SCALING_GROUP}"
                 }
             }
-        } */
+        }
 
-        stage('First Test Stage') {
+/*         stage('First Test Stage') {
             steps {
                 // webhook 적용후 확인용 테스트 단계
                 echo 'This is a webhook test stage added for verification purposes!!.'
             }
-        }
+        } */
     }
 }
