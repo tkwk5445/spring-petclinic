@@ -121,7 +121,7 @@ pipeline {
                         "--s3-location bucket=${S3_BUCKET},bundleType=zip,key=${S3_KEY} " +
                         "--deployment-group-name ${DEPLOYMENT_GROUP}-${greenEnvironment} " +
                         "--deployment-config-name CodeDeployDefault.OneAtATime " +
-                        "--target-instances autoScalingGroups=${AUTO_SCALING_GROUP}-${greenEnvironment}"
+                        "--target-instances autoScalingGroups=${AUTO_SCALING_GROUP}"
                     
                     // 트래픽을 그린 환경으로 전환
                     // 이 단계에서는 로드 밸런서의 설정 변경 등을 통해 트래픽을 그린 환경으로 라우팅해야 합니다.
