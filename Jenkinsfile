@@ -106,30 +106,30 @@ pipeline {
             }
         }
         stage('Blue-Green Deployment') {
-        steps {
-            script {
-                // 현재 블루 환경과 그린 환경을 지정
-                def blueEnvironment = "blue"
-                def greenEnvironment = "green"
-                
-                // 블루-그린 배포 시작
-                echo "Starting Blue-Green Deployment..."
-                
-                // 그린 환경에 새로운 버전 배포
-                sh "aws deploy create-deployment " +
-                    "--application-name ${APPLICATION_NAME} " +
-                    "--s3-location bucket=${S3_BUCKET},bundleType=zip,key=${S3_KEY} " +
-                    "--deployment-group-name ${DEPLOYMENT_GROUP}-${greenEnvironment} " +
-                    "--deployment-config-name CodeDeployDefault.OneAtATime " +
-                    "--target-instances autoScalingGroups=${AUTO_SCALING_GROUP}-${greenEnvironment}"
-                
-                // 트래픽을 그린 환경으로 전환
-                // 이 단계에서는 로드 밸런서의 설정 변경 등을 통해 트래픽을 그린 환경으로 라우팅해야 합니다.
-                echo "Switching traffic to the Green environment..."
-                
-                // 이후에 추가적인 검증 단계 및 모니터링을 진행할 수 있습니다.
+            steps {
+                script {
+                    // 현재 블루 환경과 그린 환경을 지정
+                    def blueEnvironment = "blue"
+                    def greenEnvironment = "green"
+                    
+                    // 블루-그린 배포 시작
+                    echo "Starting Blue-Green Deployment..."
+                    
+                    // 그린 환경에 새로운 버전 배포
+                    sh "aws deploy create-deployment " +
+                        "--application-name ${APPLICATION_NAME} " +
+                        "--s3-location bucket=${S3_BUCKET},bundleType=zip,key=${S3_KEY} " +
+                        "--deployment-group-name ${DEPLOYMENT_GROUP}-${greenEnvironment} " +
+                        "--deployment-config-name CodeDeployDefault.OneAtATime " +
+                        "--target-instances autoScalingGroups=${AUTO_SCALING_GROUP}-${greenEnvironment}"
+                    
+                    // 트래픽을 그린 환경으로 전환
+                    // 이 단계에서는 로드 밸런서의 설정 변경 등을 통해 트래픽을 그린 환경으로 라우팅해야 합니다.
+                    echo "Switching traffic to the Green environment..."
+                    
+                    // 이후에 추가적인 검증 단계 및 모니터링을 진행할 수 있습니다.
+                }
             }
         }
-    }
     }
 }
