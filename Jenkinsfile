@@ -32,7 +32,7 @@ pipeline {
 
     // 파이프라인의 단계들 정의
     stages {
-        stage('Git Clone') {
+/*         stage('Git Clone') {
             steps {
                 // Git 리포지토리를 지정된 인증 정보로 클론
                 git url: 'https://github.com/tkwk5445/spring-petclinic.git', branch: 'efficient-webjars', credentialsId: 'gitCredentials'
@@ -85,7 +85,7 @@ pipeline {
             }
         }
         
-/*         stage('Deploy to CodeDeploy') {
+        stage('Deploy to CodeDeploy') {
             steps {
                 script {
                     // AWS CLI를 사용하여 CodeDeploy에 배포 생성
@@ -97,14 +97,14 @@ pipeline {
                         "--target-instances autoScalingGroups=${AUTO_SCALING_GROUP}"
                 }
             }
-        } */
+        }
 
         stage('First Test Stage') {
             steps {
                 // webhook 적용후 확인용 테스트 단계
                 echo 'This is a webhook test stage added for verification purposes!!.'
             }
-        }
+        } */
         stage('Blue-Green Deployment') {
             steps {
                 script {
