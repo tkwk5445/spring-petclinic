@@ -102,8 +102,8 @@ pipeline {
                     sh "aws deploy create-deployment " +
                         "--application-name ${APPLICATION_NAME} " +
                         "--s3-location bucket=${S3_BUCKET},bundleType=zip,key=${S3_KEY} " +
-                        "--deployment-group-name ${DEPLOYMENT_GROUP}" +
-                        "--target-instances auto-scaling-group=${AUTO_SCALING_GROUP}"  // Auto Scaling 그룹으로 대상 지정
+                        "--deployment-group-name ${DEPLOYMENT_GROUP} " +
+                        "--target-instances auto-scaling-group=${AUTO_SCALING_GROUP}"
                 }
             }
         }
