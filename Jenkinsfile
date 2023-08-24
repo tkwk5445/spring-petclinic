@@ -26,7 +26,6 @@ pipeline {
         APPLICATION_NAME = 'project03-exercise'
         DEPLOYMENT_GROUP = 'project03-production-in_place'
         AUTO_SCALING_GROUP = 'project03-GROUP'
-        TARGET_GROUP_NAME = 'project03-target-group'
         
         // CodeDeploy 서비스 역할 ARN
         CODEDEPLOY_SERVICE_ROLE_ARN = 'arn:aws:iam::257307634175:role/project03-codedeploy-service-role'
@@ -91,7 +90,6 @@ pipeline {
                     --deployment-group-name \${DEPLOYMENT_GROUP} \\
                     --service-role-arn \${CODEDEPLOY_SERVICE_ROLE_ARN} \\
                     --auto-scaling-groups \${AUTO_SCALING_GROUP} \\
-                    --load-balancer-info "targetGroupInfoList=[{name=\${TARGET_GROUP_NAME} }]" \\
                   """
                     
                     // CodeDeploy에 배포 생성 (기본값으로 진행)
