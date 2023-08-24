@@ -102,11 +102,11 @@ pipeline {
                     sh "aws deploy create-deployment " +
                         "--application-name ${APPLICATION_NAME} " +
                         "--s3-location bucket=${S3_BUCKET},bundleType=zip,key=${S3_KEY} " +
-                        "--deployment-group-name ${DEPLOYMENT_GROUP} " +
-                        "--target-instances TagFilters=key=AutoScalingGroupName,values=${AUTO_SCALING_GROUP}"
+                        "--deployment-group-name ${DEPLOYMENT_GROUP}"
                 }
             }
         }
+
 
 /*       stage('First Test Stage') {
             steps {
