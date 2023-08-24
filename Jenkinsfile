@@ -28,6 +28,7 @@ pipeline {
         APPLICATION_NAME = 'project03-exercise'
         DEPLOYMENT_GROUP = 'project03-production-in_place'
         AUTO_SCALING_GROUP = 'project03-GROUP'
+        TARGET_GROUP_NAME = 'project03-target-group'
     }
 
     // 파이프라인의 단계들 정의
@@ -96,14 +97,14 @@ pipeline {
                         "aws deploy create-deployment-group --application-name ${APPLICATION_NAME} " +
                         "--deployment-group-name ${DEPLOYMENT_GROUP} " +
                         "--deployment-config-name CodeDeployDefault.OneAtATime " +
-                        "--auto-scaling-groups ${AUTO_SCALING_GROUP}"
+                        "--auto-scaling-groups ${AUTO_SCALING_GROUP}" +
+                        "--load-balancer-info targetGroupInfoList=[{name=${TARGET_GROUP_NAME}}]"  // 로드 밸런서와 대상 그룹 정보 추가
             
                     // CodeDeploy에 배포 생성
                     sh "aws deploy create-deployment " +
                         "--application-name ${APPLICATION_NAME} " +
                         "--s3-location bucket=${S3_BUCKET},bundleType=zip,key=${S3_KEY} " +
-                        "--deployment-group-name ${DEPLOYMENT_GROUP} " +
-                        "--target-instances auto-scaling-group=${AUTO_SCALING_GROUP}"
+                        "--deployment-group-name ${DEPLOYMENT_GROUP} " 
                 }
             }
         }
