@@ -26,7 +26,7 @@ pipeline {
         APPLICATION_NAME = 'project03-exercise'
         DEPLOYMENT_GROUP = 'project03-production-in_place'
         AUTO_SCALING_GROUP = 'project03-GROUP'
-        LOAD_BALANCER_TARGET_GROUP_NAME = 'project03-target-group'
+        LOAD_BALANCER_INFO = '{"targetGroupPairs":[{"targetGroups":[{"name":"project03-target-group"}]}],"prodTrafficRoute":{"listenerArns":["arn:aws:elasticloadbalancing:ap-northeast-2:257307634175:listener/app/project03-lb/28845e1dc7eb88e2/9296241525b226cf"]},"terminateBlueInstancesOnDeploymentSuccess":{"action":"TERMINATE","terminationWaitTimeInMinutes":5}}'
         
         // CodeDeploy 서비스 역할 ARN
         CODEDEPLOY_SERVICE_ROLE_ARN = 'arn:aws:iam::257307634175:role/project03-codedeploy-service-role'
@@ -82,8 +82,6 @@ pipeline {
         stage('Deploy to CodeDeploy') {
             steps {
                 script {
-                    def loadBalancerInfo = "[{targetGroups=[{name='${LOAD_BALANCER_TARGET_GROUP_NAME}'}]}],prodTrafficRoute=true,terminateBlueInstancesOnDeploymentSuccess={action=TERMINATE,terminationWaitTimeInMinutes=5}"
-                    
                     // CodeDeploy 애플리케이션 생성 
                     sh "aws deploy create-application --application-name ${APPLICATION_NAME}"
 
@@ -93,7 +91,7 @@ pipeline {
                         "--deployment-group-name ${DEPLOYMENT_GROUP} " +
                         "--service-role-arn ${CODEDEPLOY_SERVICE_ROLE_ARN} " +  // CodeDeploy 서비스 역할 ARN 추가
                         "--auto-scaling-groups ${AUTO_SCALING_GROUP}"
-                        "--load-balancer-info '${loadBalancerInfo}'"
+                        "--load-balancer-info ${LOAD_BALANCER_INFO}"
 
                     // CodeDeploy에 배포 생성 (기본값으로 진행)
                     sh "aws deploy create-deployment " +
