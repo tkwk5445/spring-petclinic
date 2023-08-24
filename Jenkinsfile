@@ -26,6 +26,7 @@ pipeline {
         APPLICATION_NAME = 'project03-exercise'
         DEPLOYMENT_GROUP = 'project03-production-in_place'
         AUTO_SCALING_GROUP = 'project03-GROUP'
+        TARGET_GROUP = 'project03-target-group'
         
         // CodeDeploy 서비스 역할 ARN
         CODEDEPLOY_SERVICE_ROLE_ARN = 'arn:aws:iam::257307634175:role/project03-codedeploy-service-role'
@@ -97,7 +98,8 @@ pipeline {
                         "--application-name ${APPLICATION_NAME} " +
                         "--s3-location bucket=${S3_BUCKET},bundleType=zip,key=${S3_KEY} " +
                         "--deployment-group-name ${DEPLOYMENT_GROUP}"
-                        "--target-instances auto-scaling-group=${AUTO_SCALING_GROUP}"
+                        // 대상그룹 대상 등록
+                        "aws elbv2 register-targets --target-group-arn arn:aws:elasticloadbalancing:region:account-id:targetgroup/${TARGET_GROUP}/${TARGET_GROUP} --targets Id=${AUTO_SCALING_GROUP}"
                     
                 }
             }
