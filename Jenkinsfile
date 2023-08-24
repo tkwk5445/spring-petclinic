@@ -98,7 +98,7 @@ pipeline {
                         "--deployment-group-name ${DEPLOYMENT_GROUP} " +
                         "--deployment-config-name CodeDeployDefault.OneAtATime " +
                         "--auto-scaling-groups ${AUTO_SCALING_GROUP}" +
-                        "--load-balancer-info targetGroupInfoList=[{name=${TARGET_GROUP_NAME}}]"  // 로드 밸런서와 대상 그룹 정보 추가
+                        "--load-balancer-info ${TARGET_GROUP_NAME}"  // 로드 밸런서와 대상 그룹 정보 추가
             
                     // CodeDeploy에 배포 생성
                     sh "aws deploy create-deployment " +
