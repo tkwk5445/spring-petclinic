@@ -88,18 +88,27 @@ pipeline {
         stage('Deploy to CodeDeploy') {
             steps {
                 script {
-                    // AWS CLI를 사용하여 CodeDeploy에 배포 생성
+                    // 애플리케이션 생성
+                    sh "aws deploy get-application --application-name ${APPLICATION_NAME} || aws deploy create-application --application-name ${APPLICATION_NAME}"
+
+                    // 배포 그룹 생성
+                    sh "aws deploy get-deployment-group --application-name ${APPLICATION_NAME} --deployment-group-name ${DEPLOYMENT_GROUP} || " +
+                        "aws deploy create-deployment-group --application-name ${APPLICATION_NAME} " +
+                        "--deployment-group-name ${DEPLOYMENT_GROUP} " +
+                        "--deployment-config-name CodeDeployDefault.OneAtATime " +
+                        "--auto-scaling-groups ${AUTO_SCALING_GROUP}"
+            
+                    // CodeDeploy에 배포 생성
                     sh "aws deploy create-deployment " +
                         "--application-name ${APPLICATION_NAME} " +
                         "--s3-location bucket=${S3_BUCKET},bundleType=zip,key=${S3_KEY} " +
                         "--deployment-group-name ${DEPLOYMENT_GROUP} " +
-                        "--deployment-config-name CodeDeployDefault.OneAtATime " +
-                        "--target-instances autoScalingGroups=${AUTO_SCALING_GROUP}"
+                        "--target-instances TagFilters=key=AutoScalingGroupName,values=${AUTO_SCALING_GROUP}"
                 }
             }
         }
 
-/*         stage('First Test Stage') {
+/*       stage('First Test Stage') {
             steps {
                 // webhook 적용후 확인용 테스트 단계
                 echo 'This is a webhook test stage added for verification purposes!!.'
