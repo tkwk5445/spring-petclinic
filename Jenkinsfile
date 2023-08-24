@@ -26,6 +26,7 @@ pipeline {
         APPLICATION_NAME = 'project03-exercise'
         DEPLOYMENT_GROUP = 'project03-production-in_place'
         AUTO_SCALING_GROUP = 'project03-GROUP'
+        LOAD_BALANCER_TARGET_GROUP_NAME = 'project03-target-group'
         
         // CodeDeploy 서비스 역할 ARN
         CODEDEPLOY_SERVICE_ROLE_ARN = 'arn:aws:iam::257307634175:role/project03-codedeploy-service-role'
@@ -90,6 +91,7 @@ pipeline {
                         "--deployment-group-name ${DEPLOYMENT_GROUP} " +
                         "--service-role-arn ${CODEDEPLOY_SERVICE_ROLE_ARN} " +  // CodeDeploy 서비스 역할 ARN 추가
                         "--auto-scaling-groups ${AUTO_SCALING_GROUP}"
+                        "--target-group-name ${LOAD_BALANCER_TARGET_GROUP_NAME}"  // 로드 밸런서 대상 그룹 이름 추가
 
                     // CodeDeploy에 배포 생성 (기본값으로 진행)
                     sh "aws deploy create-deployment " +
