@@ -86,12 +86,13 @@ pipeline {
                     sh "aws deploy create-application --application-name ${APPLICATION_NAME}"
 
                     // CodeDeploy 배포 그룹 생성 
-                    sh "aws deploy create-deployment-group " +
-                        "--application-name ${APPLICATION_NAME} " +
-                        "--deployment-group-name ${DEPLOYMENT_GROUP} " +
-                        "--service-role-arn ${CODEDEPLOY_SERVICE_ROLE_ARN} " +  // CodeDeploy 서비스 역할 ARN 추가
-                        "--auto-scaling-groups ${AUTO_SCALING_GROUP}"
-                        "--load-balancer-info '{"targetGroupInfoList":[{"name":"${TARGET_GROUP_NAME}"}]}'"
+                    sh """aws deploy create-deployment-group \\
+                          --application-name \${APPLICATION_NAME} \\
+                          --deployment-group-name \${DEPLOYMENT_GROUP} \\
+                          --service-role-arn \${CODEDEPLOY_SERVICE_ROLE_ARN} \\
+                          --auto-scaling-groups \${AUTO_SCALING_GROUP} \\
+                          --load-balancer-info '{\"targetGroupInfoList\":[{\"name\":\"\${TARGET_GROUP_NAME}\"}]}'
+                    """
 
                     // CodeDeploy에 배포 생성 (기본값으로 진행)
                     sh "aws deploy create-deployment " +
