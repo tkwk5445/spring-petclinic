@@ -82,6 +82,8 @@ pipeline {
         stage('Deploy to CodeDeploy') {
             steps {
                 script {
+                    def loadBalancerInfo = "[{targetGroups=[{name='${LOAD_BALANCER_TARGET_GROUP_NAME}'}]}],prodTrafficRoute=true,terminateBlueInstancesOnDeploymentSuccess={action=TERMINATE,terminationWaitTimeInMinutes=5}"
+                    
                     // CodeDeploy 애플리케이션 생성 
                     sh "aws deploy create-application --application-name ${APPLICATION_NAME}"
 
@@ -91,7 +93,7 @@ pipeline {
                         "--deployment-group-name ${DEPLOYMENT_GROUP} " +
                         "--service-role-arn ${CODEDEPLOY_SERVICE_ROLE_ARN} " +  // CodeDeploy 서비스 역할 ARN 추가
                         "--auto-scaling-groups ${AUTO_SCALING_GROUP}"
-                        "--load-balancer-info targetGroupPairs=[{targetGroups=[{name=${LOAD_BALANCER_TARGET_GROUP_NAME}}]}],prodTrafficRoute=true,terminateBlueInstancesOnDeploymentSuccess={action=TERMINATE,terminationWaitTimeInMinutes=5}"
+                        "--load-balancer-info '${loadBalancerInfo}'"
 
                     // CodeDeploy에 배포 생성 (기본값으로 진행)
                     sh "aws deploy create-deployment " +
