@@ -94,11 +94,11 @@ pipeline {
                           --load-balancer-info '{\"targetGroupInfoList\":[{\"name\":\"\${TARGET_GROUP_NAME}\"}]}'
                     """
 
-                    // CodeDeploy에 배포 생성 (기본값으로 진행)
+                    /* // CodeDeploy에 배포 생성 (기본값으로 진행)
                     sh "aws deploy create-deployment " +
                         "--application-name ${APPLICATION_NAME} " +
                         "--s3-location bucket=${S3_BUCKET},bundleType=zip,key=${S3_KEY} " +
-                        "--deployment-group-name ${DEPLOYMENT_GROUP}"
+                        "--deployment-group-name ${DEPLOYMENT_GROUP}" */
                 }
             }
         }
