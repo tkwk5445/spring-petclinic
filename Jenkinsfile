@@ -27,7 +27,7 @@ pipeline {
         // CodeDeploy 배포에 필요한 정보
         APPLICATION_NAME = 'project03-exercise'
         DEPLOYMENT_GROUP = 'project03-production-in_place'
-        AUTO_SCALING_GROUP = 'project03-GROUP'
+        AUTO_SCALING_GROUP = 'project03-asg'
         TARGET_GROUP_NAME = 'project03-target-group'
     }
 
