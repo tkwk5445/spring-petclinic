@@ -89,7 +89,7 @@ pipeline {
         stage('Deploy to CodeDeploy') {
             steps {
                 script {
-                    // 애플리케이션 생성
+                    /* // 애플리케이션 생성
                     sh "aws deploy get-application --application-name ${APPLICATION_NAME} || aws deploy create-application --application-name ${APPLICATION_NAME}"
 
                     // 배포 그룹 생성
@@ -98,7 +98,7 @@ pipeline {
                         "--deployment-group-name ${DEPLOYMENT_GROUP} " +
                         "--deployment-config-name CodeDeployDefault.OneAtATime " +
                         "--auto-scaling-groups ${AUTO_SCALING_GROUP}" +
-                        "--load-balancer-info targetGroupInfo=name=${TARGET_GROUP_NAME}"
+                        "--load-balancer-info targetGroupInfo=name=${TARGET_GROUP_NAME}" */
             
                     // CodeDeploy에 배포 생성
                     sh "aws deploy create-deployment " +
