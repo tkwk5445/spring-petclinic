@@ -66,15 +66,16 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    // Docker 레지스트리에 인증하고 Docker 이미지를 푸시
-                    sh 'rm -f ~/.dockercfg ~/.docker/config.json || true'
-
-                    docker.withRegistry("https://${ECR_REPOSITORY}", "ecr:${REGION}:${AWS_CREDENTIALS_NAME}") {
-                        docker.image("${DOCKER_IMAGE_NAME}:${DOCKER_TAG}").push()
-                    }
+                    // NCP 컨테이너 레지스트리 로그인
+                    sh 'docker login spring-repo.kr.ncr.ntruss.com -u 603F20D2573C48A383E5 -p 6BA89F64D834CAEBCD445661DA35EF30EDF561B1'
+        
+                    // Docker 이미지 푸시
+                    sh 'docker tag ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} ${ECR_DOCKER_IMAGE}:${ECR_DOCKER_TAG}'
+                    sh 'docker push ${ECR_DOCKER_IMAGE}:${ECR_DOCKER_TAG}'
                 }
             }
         }
+
 
 /*         stage('Upload to S3') {
             steps {
