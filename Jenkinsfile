@@ -71,7 +71,7 @@ pipeline {
         
                     // Docker 이미지 푸시
                     sh 'docker tag ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} ${ECR_DOCKER_IMAGE}:${ECR_DOCKER_TAG}'
-                    sh 'docker push ${ECR_DOCKER_IMAGE}:${ECR_DOCKER_TAG}'
+                    sh 'docker push ${ECR_DOCKER_IMAGE}/:${ECR_DOCKER_TAG}'
                 }
             }
         }
