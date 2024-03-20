@@ -10,24 +10,26 @@ pipeline {
     // 파이프라인 전체에서 사용될 환경 변수들 정의
     environment {
         // Docker 레지스트리와 S3에 필요한 AWS 자격 증명
-        AWS_CREDENTIALS_NAME = 'AWSCredentials'
-        REGION = 'ap-northeast-2'
+/*         AWS_CREDENTIALS_NAME = 'AWSCredentials'
+        REGION = 'ap-northeast-2' */
+        AWS_CREDENTIALS_NAME = 'NCPCredentials'
+        REGION = 'KR'
         
         // Docker 이미지 정보
-        DOCKER_IMAGE_NAME = 'project03-spring-petclinic'
+        DOCKER_IMAGE_NAME = 'spring-petclinic'
         DOCKER_TAG = '1.0'
-        ECR_REPOSITORY = '257307634175.dkr.ecr.ap-northeast-2.amazonaws.com/'
+        ECR_REPOSITORY = 'spring-repo.kr.ncr.ntruss.com'
         ECR_DOCKER_IMAGE = "${ECR_REPOSITORY}${DOCKER_IMAGE_NAME}"
         ECR_DOCKER_TAG = "${DOCKER_TAG}"
         
         // S3 업로드에 필요한 정보
-        S3_BUCKET = 'project03-terraform-state'
-        S3_KEY = 'deploy-1.0.zip'
+/*         S3_BUCKET = 'project03-terraform-state'
+        S3_KEY = 'deploy-1.0.zip' */
         
-        // CodeDeploy 배포에 필요한 정보
+/*         // CodeDeploy 배포에 필요한 정보
         APPLICATION_NAME = 'project03-exercise'
         DEPLOYMENT_GROUP = 'project03-production-in_place'
-        AUTO_SCALING_GROUP = 'project03-asg'
+        AUTO_SCALING_GROUP = 'project03-asg' */
     }
 
     // 파이프라인의 단계들 정의
@@ -74,7 +76,7 @@ pipeline {
             }
         }
 
-        stage('Upload to S3') {
+/*         stage('Upload to S3') {
             steps {
                 // 파일들을 압축하여 S3 버킷에 업로드
                 dir("${env.WORKSPACE}") {
@@ -84,8 +86,8 @@ pipeline {
                 }
             }
         }
-        
-        stage('Deploy to CodeDeploy') {
+         */
+/*         stage('Deploy to CodeDeploy') {
             steps {
                 script {
                     // AWS CLI를 사용하여 CodeDeploy에 배포 생성
@@ -98,7 +100,7 @@ pipeline {
                 }
             }
         }
-
+ */
         stage('First Test Stage') {
             steps {
                 // webhook 적용후 확인용 테스트 단계
