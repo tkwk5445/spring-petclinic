@@ -149,7 +149,7 @@ EOF
                             # 실행 중인 컨테이너 확인
                             echo 'Checking running containers...'
                             docker ps
-        EOF
+EOF
                         """
                     }
                 }
