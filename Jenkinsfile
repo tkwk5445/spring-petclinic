@@ -130,6 +130,7 @@ EOF
                         sh """
                         ssh -o StrictHostKeyChecking=no ${DEPLOY_SERVER} << 'EOF'
                             # Docker 이미지 Pull
+                            docker login spring-repo.kr.ncr.ntruss.com -u 603F20D2573C48A383E5 -p 6BA89F64D834CAEBCD445661DA35EF30EDF561B1
                             docker pull ${DOCKER_IMAGE_NAME}:${DOCKER_TAG}
 
                             # 기존 컨테이너 중지 및 삭제
