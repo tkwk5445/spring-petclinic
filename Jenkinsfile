@@ -19,7 +19,7 @@ pipeline {
         DOCKER_IMAGE_NAME = 'spring-petclinic'
         DOCKER_TAG = '1.0'
         ECR_REPOSITORY = 'spring-repo.kr.ncr.ntruss.com'
-        ECR_DOCKER_IMAGE = "${ECR_REPOSITORY}${DOCKER_IMAGE_NAME}"
+        ECR_DOCKER_IMAGE = "${ECR_REPOSITORY}/${DOCKER_IMAGE_NAME}"
         ECR_DOCKER_TAG = "${DOCKER_TAG}"
         
         // S3 업로드에 필요한 정보
@@ -71,7 +71,7 @@ pipeline {
         
                     // Docker 이미지 푸시
                     sh 'docker tag ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} ${ECR_DOCKER_IMAGE}:${ECR_DOCKER_TAG}'
-                    sh 'docker push ${ECR_DOCKER_IMAGE}/:${ECR_DOCKER_TAG}'
+                    sh 'docker push ${ECR_DOCKER_IMAGE}:${ECR_DOCKER_TAG}'
                 }
             }
         }
