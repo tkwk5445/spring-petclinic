@@ -131,7 +131,7 @@ EOF
                         ssh -o StrictHostKeyChecking=no ${DEPLOY_SERVER} << 'EOF'
                             # Docker 레지스트리 로그인
                             echo 'Logging into Docker registry...'
-                            docker login spring-repo.kr.ncr.ntruss.com -u 603F20D2573C48A383E5 -p 6BA89F64D834CAEBCD445661DA35EF30EDF561B1
+                            docker login ${ECR_REPOSITORY} -u 603F20D2573C48A383E5 -p 6BA89F64D834CAEBCD445661DA35EF30EDF561B1
         
                             # Docker 이미지 Pull
                             echo 'Pulling Docker image...'
