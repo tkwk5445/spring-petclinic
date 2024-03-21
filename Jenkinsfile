@@ -21,6 +21,9 @@ pipeline {
         ECR_REPOSITORY = 'spring-repo.kr.ncr.ntruss.com'
         ECR_DOCKER_IMAGE = "${ECR_REPOSITORY}/${DOCKER_IMAGE_NAME}"
         ECR_DOCKER_TAG = "${DOCKER_TAG}"
+        CONTAINER_NAME = 'spring-petclinic'
+        DEPLOY_SERVER = 'root@10.0.0.7'
+        SSH_CREDENTIALS_ID = 'SpringCredentials'
         
         // S3 업로드에 필요한 정보
         S3_BUCKET = 'deploy-bucket'
@@ -88,6 +91,32 @@ pipeline {
                 }
             }
         }
+
+         stage('Deploy Container') {
+                    steps {
+                        script {
+                            // SSH를 통해 배포받을 서버에 접속하여 컨테이너 배포 스크립트 실행
+                            sshagent([SSH_CREDENTIALS_ID]) {
+                                sh """
+                                    ssh -o StrictHostKeyChecking=no ${DEPLOY_SERVER} << EOF
+                                        # Docker 이미지 Pull
+                                        docker pull ${DOCKER_IMAGE_NAME}:${DOCKER_TAG}
+        
+                                        # 기존 컨테이너 중지 및 삭제
+                                        docker stop ${CONTAINER_NAME} || true
+                                        docker rm ${CONTAINER_NAME} || true
+        
+                                        # 새 Docker 컨테이너 실행
+                                        docker run -d --name ${CONTAINER_NAME} -p 8080:8080 ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} 
+        
+                                        # 실행 중인 컨테이너 확인
+                                        docker ps
+                                    EOF
+                                """
+                            }
+                        }
+                    }
+                }
         
 /*         stage('Deploy to CodeDeploy') {
             steps {
