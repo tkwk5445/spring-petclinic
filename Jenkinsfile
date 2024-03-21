@@ -23,8 +23,8 @@ pipeline {
         ECR_DOCKER_TAG = "${DOCKER_TAG}"
         
         // S3 업로드에 필요한 정보
-/*         S3_BUCKET = 'project03-terraform-state'
-        S3_KEY = 'deploy-1.0.zip' */
+        S3_BUCKET = 'deploy-bucket'
+        S3_KEY = 'deploy-1.0.zip'
         
 /*         // CodeDeploy 배포에 필요한 정보
         APPLICATION_NAME = 'project03-exercise'
@@ -77,7 +77,7 @@ pipeline {
         }
 
 
-/*         stage('Upload to S3') {
+        stage('Upload to S3') {
             steps {
                 // 파일들을 압축하여 S3 버킷에 업로드
                 dir("${env.WORKSPACE}") {
@@ -87,7 +87,7 @@ pipeline {
                 }
             }
         }
-         */
+        
 /*         stage('Deploy to CodeDeploy') {
             steps {
                 script {
