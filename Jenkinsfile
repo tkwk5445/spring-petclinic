@@ -82,7 +82,8 @@ pipeline {
                 // 파일들을 압축하여 S3 버킷에 업로드
                 dir("${env.WORKSPACE}") {
                     sh 'zip -r deploy-1.0.zip ./scripts appspec.yml'
-                    sh 'aws s3 cp --region ${REGION} --acl private ./deploy-1.0.zip s3://${S3_BUCKET}/${S3_KEY}'
+                    //sh 'aws s3 cp --region ${REGION} --acl private ./deploy-1.0.zip s3://${S3_BUCKET}/${S3_KEY}'
+                    sh 'aws --endpoint-url=https://kr.object.ncloudstorage.com s3 cp ./deploy-1.0.zip s3://${S3_BUCKET}/${S3_KEY}'
                     sh 'rm -rf ./deploy-1.0.zip'
                 }
             }
