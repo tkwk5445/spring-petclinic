@@ -91,7 +91,37 @@ pipeline {
                 }
             }
         }
-
+        
+        stage('Install Docker') {
+            steps {
+                script {
+                    sshagent([SSH_CREDENTIALS_ID]) {
+                        sh """
+                            ssh -o StrictHostKeyChecking=no ${DEPLOY_SERVER} << EOF
+                                # Docker가 설치되어 있는지 확인
+                                if ! type docker > /dev/null 2>&1; then
+                                    echo 'Docker is not installed. Installing Docker...'
+                                    
+                                    # 운영 체제에 따른 Docker 설치 명령어
+                                    # Ubuntu를 예로 들면 다음 명령어를 사용할 수 있습니다.
+                                    sudo apt-get update
+                                    sudo apt-get install -y docker.io
+                                    
+                                    # Docker 서비스 시작
+                                    sudo systemctl start docker
+                                    sudo systemctl enable docker
+                                    
+                                    echo 'Docker installation completed.'
+                                else
+                                    echo 'Docker is already installed.'
+                                fi
+                            EOF
+                        """
+                    }
+                }
+            }
+        }
+        
          stage('Deploy Container') {
                     steps {
                         script {
