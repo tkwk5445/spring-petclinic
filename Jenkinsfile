@@ -97,56 +97,56 @@ pipeline {
                 script {
                     sshagent([SSH_CREDENTIALS_ID]) {
                         sh """
-                            ssh -o StrictHostKeyChecking=no ${DEPLOY_SERVER} << EOF
-                                # Docker가 설치되어 있는지 확인
-                                if ! type docker > /dev/null 2>&1; then
-                                    echo 'Docker is not installed. Installing Docker...'
-                                    
-                                    # 운영 체제에 따른 Docker 설치 명령어
-                                    # Ubuntu를 예로 들면 다음 명령어를 사용할 수 있습니다.
-                                    sudo apt-get update
-                                    sudo apt-get install -y docker.io
-                                    
-                                    # Docker 서비스 시작
-                                    sudo systemctl start docker
-                                    sudo systemctl enable docker
-                                    
-                                    echo 'Docker installation completed.'
-                                else
-                                    echo 'Docker is already installed.'
-                                fi
-                            EOF
+                        ssh -o StrictHostKeyChecking=no ${DEPLOY_SERVER} << 'EOF'
+                            # Docker가 설치되어 있는지 확인
+                            if ! type docker > /dev/null 2>&1; then
+                                echo 'Docker is not installed. Installing Docker...'
+                                
+                                # 운영 체제에 따른 Docker 설치 명령어
+                                # Ubuntu를 예로 들면 다음 명령어를 사용할 수 있습니다.
+                                sudo apt-get update
+                                sudo apt-get install -y docker.io
+                                
+                                # Docker 서비스 시작
+                                sudo systemctl start docker
+                                sudo systemctl enable docker
+                                
+                                echo 'Docker installation completed.'
+                            else
+                                echo 'Docker is already installed.'
+                            fi
+EOF
                         """
                     }
                 }
             }
         }
-        
-         stage('Deploy Container') {
-                    steps {
-                        script {
-                            // SSH를 통해 배포받을 서버에 접속하여 컨테이너 배포 스크립트 실행
-                            sshagent([SSH_CREDENTIALS_ID]) {
-                                sh """
-                                    ssh -o StrictHostKeyChecking=no ${DEPLOY_SERVER} << EOF
-                                        # Docker 이미지 Pull
-                                        docker pull ${DOCKER_IMAGE_NAME}:${DOCKER_TAG}
-        
-                                        # 기존 컨테이너 중지 및 삭제
-                                        docker stop ${CONTAINER_NAME} || true
-                                        docker rm ${CONTAINER_NAME} || true
-        
-                                        # 새 Docker 컨테이너 실행
-                                        docker run -d --name ${CONTAINER_NAME} -p 8080:8080 ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} 
-        
-                                        # 실행 중인 컨테이너 확인
-                                        docker ps
-                                    EOF
-                                """
-                            }
-                        }
+
+        // Docker 컨테이너 배포 단계
+        stage('Deploy Container') {
+            steps {
+                script {
+                    sshagent([SSH_CREDENTIALS_ID]) {
+                        sh """
+                        ssh -o StrictHostKeyChecking=no ${DEPLOY_SERVER} << 'EOF'
+                            # Docker 이미지 Pull
+                            docker pull ${DOCKER_IMAGE_NAME}:${DOCKER_TAG}
+
+                            # 기존 컨테이너 중지 및 삭제
+                            docker stop ${CONTAINER_NAME} || true
+                            docker rm ${CONTAINER_NAME} || true
+
+                            # 새 Docker 컨테이너 실행
+                            docker run -d --name ${CONTAINER_NAME} -p 8080:8080 ${DOCKER_IMAGE_NAME}:${DOCKER_TAG}
+
+                            # 실행 중인 컨테이너 확인
+                            docker ps
+EOF
+                        """
                     }
                 }
+            }
+        }
         
 /*         stage('Deploy to CodeDeploy') {
             steps {
