@@ -129,26 +129,32 @@ EOF
                     sshagent([SSH_CREDENTIALS_ID]) {
                         sh """
                         ssh -o StrictHostKeyChecking=no ${DEPLOY_SERVER} << 'EOF'
-                            # Docker 이미지 Pull
+                            # Docker 레지스트리 로그인
+                            echo 'Logging into Docker registry...'
                             docker login spring-repo.kr.ncr.ntruss.com -u 603F20D2573C48A383E5 -p 6BA89F64D834CAEBCD445661DA35EF30EDF561B1
+        
+                            # Docker 이미지 Pull
+                            echo 'Pulling Docker image...'
                             docker pull ${DOCKER_IMAGE_NAME}:${DOCKER_TAG}
-
+        
                             # 기존 컨테이너 중지 및 삭제
+                            echo 'Stopping and removing existing container...'
                             docker stop ${CONTAINER_NAME} || true
                             docker rm ${CONTAINER_NAME} || true
-
+        
                             # 새 Docker 컨테이너 실행
+                            echo 'Running new container...'
                             docker run -d --name ${CONTAINER_NAME} -p 8080:8080 ${DOCKER_IMAGE_NAME}:${DOCKER_TAG}
-
+        
                             # 실행 중인 컨테이너 확인
+                            echo 'Checking running containers...'
                             docker ps
-EOF
+        EOF
                         """
                     }
                 }
             }
         }
-        
 /*         stage('Deploy to CodeDeploy') {
             steps {
                 script {
