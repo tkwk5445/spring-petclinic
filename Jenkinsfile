@@ -135,7 +135,7 @@ EOF
         
                             # Docker 이미지 Pull
                             echo 'Pulling Docker image...'
-                            docker pull ${DOCKER_IMAGE}:${DOCKER_TAG}
+                            docker pull ${ECR_DOCKER_IMAGE}:${DOCKER_TAG}
         
                             # 기존 컨테이너 중지 및 삭제
                             echo 'Stopping and removing existing container...'
