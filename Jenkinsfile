@@ -70,7 +70,7 @@ pipeline {
             steps {
                 script {
                     // NCP 컨테이너 레지스트리 로그인
-                    sh 'docker login spring-repo.kr.ncr.ntruss.com -u 603F20D2573C48A383E5 -p 6BA89F64D834CAEBCD445661DA35EF30EDF561B1'
+                    sh 'docker login ${ECR_REPOSITORY} -u 603F20D2573C48A383E5 -p 6BA89F64D834CAEBCD445661DA35EF30EDF561B1'
         
                     // Docker 이미지 푸시
                     sh 'docker tag ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} ${ECR_DOCKER_IMAGE}:${ECR_DOCKER_TAG}'
@@ -144,7 +144,7 @@ EOF
         
                             # 새 Docker 컨테이너 실행
                             echo 'Running new container...'
-                            docker run -d --name ${CONTAINER_NAME} -p 8080:8080 ${DOCKER_IMAGE_NAME}:${DOCKER_TAG}
+                            docker run -d --name ${CONTAINER_NAME} -p 8080:8080 ${ECR_DOCKER_IMAGE}:${DOCKER_TAG}
         
                             # 실행 중인 컨테이너 확인
                             echo 'Checking running containers...'
