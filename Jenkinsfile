@@ -70,7 +70,7 @@ pipeline {
             steps {
                 script {
                     // NCP 컨테이너 레지스트리 로그인
-                    sh 'docker login ${ECR_REPOSITORY} -u 603F20D2573C48A383E5 -p 6BA89F64D834CAEBCD445661DA35EF30EDF561B1'
+                    sh 'docker login ${ECR_REPOSITORY} -u  -p '
         
                     // Docker 이미지 푸시
                     sh 'docker tag ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} ${ECR_DOCKER_IMAGE}:${ECR_DOCKER_TAG}'
